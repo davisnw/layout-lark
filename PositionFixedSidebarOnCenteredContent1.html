@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+	<title>Centered content with fixed header and fixed sidebar.</title>
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+		}
+	
+		#header {
+			background-color: red;
+			position: fixed;
+			width: 100%;
+			text-align: center;
+			border:solid 1px;
+		}
+		
+		#headerFix {
+			width:100%;
+		}
+		
+		#main {
+			background-color: lightgrey;
+			margin: 0 auto;
+			max-width: 1024px;
+			min-width: 200px;
+			border: solid 1px;
+		}
+
+		#sidebar {
+			background-color: cyan;
+			position: fixed;
+			top:50px;
+			transform: translateX(-100%);
+			border: 1px solid black;
+		}
+
+		#sidebar.narrow {
+			transform: none;
+			margin:0;
+			padding:0;
+			border-right: none;
+		}
+		
+		#separator {
+			display:none;
+		}
+		
+		#separator.narrow {
+			display:block;
+			background-color: white;
+			border-right: 1px solid black;
+			margin:0;
+			padding:0;
+			float:left;
+		}
+		
+		#footer {
+			text-align: center;
+		}
+		
+		/************** Reveal Mode Styles ******************/
+		.reveal #header {
+			opacity: 0.6;
+		}
+		
+		.reveal #headerFix {
+			font-weight:bold;
+		}
+		
+		.reveal #headerFix:after {
+			content: "Header Fix";
+		}
+		
+		.reveal #separator {
+			font-weight:bold;
+			background-color:yellow;
+			opacity: 0.5;
+		}
+		
+		.reveal #separator:after {
+			content: "Separator";
+		}
+		
+		.reveal #sidebar:after {
+			content: "[p: " attr(data-parent-id) "]";
+		}
+		
+		.reveal #main:before {
+			content: "[main width: " attr(data-main-width) "px]";
+		}
+	</style>
+</head>
+<body>
+<script>
+function toggleReveal() {
+	if (document.body.classList.contains('reveal')) {
+		document.body.classList.remove('reveal');
+	} else {
+		document.body.classList.add('reveal');
+	}
+}
+</script>
+<!--
+similar effect can be achieved by media queries and transforms on main content, but you have to hard-code widths, and some third-party ui controls do weird things when their parent container is translated.
+-->
+	<div id="header">
+		Hello Header
+		<button type="button" onclick="javascript: toggleReveal();">Toggle Reveal</button>
+	</div>
+	<div id="headerFix"></div>
+	<div id="wrapper">
+
+		<div id="separator"></div>
+		<div id="main">
+			<div id="sidebar" data-blah="bhl">
+				sidebar&nbsp;asdfasd
+				<p> blah
+			</div>
+			
+			
+			<p> a asdfasdf
+			<p> asf
+			<p> eqwer
+			<p> q
+			<p> wr
+			<p> qwr
+			<p> er
+			<p> qw
+			<p> er
+			<p> qwe
+			<p> rqerq
+			<p> werq
+			<p> er
+			<p> qw
+			<p> erqwe
+			<p> qw
+			<p> er
+			<p> er
+			<p> qwer
+			<p> er
+			<p> qw
+			<p> er
+			<p> qwe
+			<p> rqerq
+			<p> werq
+			<p> er
+			<p> qw
+			<p> erqwe
+			<p> qw
+			<p> er
+			<p> er
+			<p> qwer
+		</div>
+		
+		<div id="footer">
+			Goodbye Footer
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+		function headerFix() {
+			var header = document.getElementById('header');
+			var headerFix = document.getElementById('headerFix');
+			headerFix.style.height = header.offsetHeight + 'px';
+		}
+	
+		function setSideBarStyle() {
+			var sideBar = document.getElementById('sidebar');
+			var main = document.getElementById('main');
+			var sideBounds = sideBar.getBoundingClientRect();
+			var mainBounds = main.getBoundingClientRect();
+			var separator = document.getElementById('separator');
+			if (sideBounds.left < 0) {
+				sideBar.classList.add('narrow');
+				main.classList.add('narrow');
+				separator.classList.add('narrow');
+				separator.style.width = sidebar.offsetWidth  + 'px';
+				separator.style.height = main.offsetHeight + 'px';
+				wrapper.insertBefore(sidebar, separator);
+			} else if (mainBounds.left - sideBounds.right > 0) {
+				sideBar.classList.remove('narrow');
+				separator.classList.remove('narrow');
+				main.classList.remove('narrow');
+				main.appendChild(sidebar);
+				console.log('separated');
+			}
+			
+			sideBar.dataset.parentId = sidebar.parentNode.id;
+			main.dataset.mainWidth = main.offsetWidth;
+		}
+		
+		window.addEventListener('resize', setSideBarStyle);
+		headerFix();
+		setSideBarStyle();
+	</script>
+</body>
+</html>
