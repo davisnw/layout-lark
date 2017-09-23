@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Flex Header Sidebar Example</title>
+	<style type="text/css">
+	html {
+		height: 100%;
+	}
+
+	body {
+		height: 100%;
+		overflow: hidden;
+		margin: 0px;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;	
+	}
+
+	#header {
+		text-align: center;
+		background-color: black;
+		color: white;
+	}
+	
+	#header h1 {
+		margin: 0;
+	}
+
+	#wrapper {
+		height: 100%;
+		overflow: hidden;
+		margin: 0px;
+		display: flex;
+		flex-grow: 1;
+	}
+
+	#nav {
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		flex-shrink: 0;
+		flex-grow: 0;
+		background-color: brown;
+	}
+	
+	#nav ul a {
+		color: white;
+	}
+	
+	nav ul {
+		list-style: none;
+		padding: 5px;
+	}
+	
+	main {
+		height: 100%;
+		overflow-y: auto;
+		flex-grow: 1;
+		padding-left: 5px;
+		background-color: wheat;
+	}
+	</style>
+</head>
+<body>
+	<header id="header">
+		<h1>Header</h1>
+	</header>
+	<div id="wrapper">
+	<nav id="nav">
+		<ul>
+			<li><a href="#overview">Overview</a></li>
+			<li><a href="#html">Html</a></li>
+			<li><a href="#css">CSS</a></li>
+			<li><a href="#references">References</a></li>
+		</ul>
+	</nav>
+	<main>
+		<section id="overview">
+			<h2>Overview</h2>
+
+			<p>
+			This layout demonstrates a fixed header bar and a fixed navigation bar using
+			the css flexbox. No javascript or meida queries are used in this example.
+
+			<p>
+			The primary content and the navigation content scroll independently as the window size
+			shrinks. However, there are curious inconsistencies between the different browsers as to where
+			the scrollbar takes up space for the navigation section.
+
+			<p>
+			The effect is achieved without use of <code>position: fixed</code>, and without hard-coding any
+			specific content sizes.  Only padding and margin are given specific values.
+		</section>
+		<section id="html">
+			<h2>Html</h2>
+			<p>
+			The basic markup utilizes one <code>&lt;div&gt;</code> element to wrap the sidebar
+			and primary content.  This is to enable the full width header to be separated vertically.
+			The essential structure is:
+			<pre><code>
+&lt;body&gt;
+  &lt;header id="header"&gt;
+  &lt;/header&gt;
+  &lt;div id="wrapper"&gt;
+    &lt;nav id="nav"&gt;
+    &lt;/nav&gt;
+    &lt;main&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+			</code></pre>
+		</section>
+		<section id="css">
+			<h2>CSS</h2>
+			<p>
+			The <code>flex-grow</code> and <code>flex-shrink</code> control the relative
+			size of items in the layout without hard-coding a specific width, and the combination of <code>overflow:hidden</code>
+			and <code>overflow-y: auto</code> to enable independent scrolling of the navigation and main content.
+			Selective use of <code>height:100%</code> is also crucial to ensuring the layout flows properly.
+			
+			<p>
+			Many of the css properties can be eliminated in Chrome without observable effect, but appear to
+			be required to get the layout to work at all in other browsers. As of 2017-09-23, Edge was
+			actually more flaky than IE11 with this layout, sometimes losing the scrollbar, and sometimes
+			losing the ability to scroll even if the scrollbar was made visible.
+			
+			<p>
+			To achieve the fixed header, the body is styled with <code>display: flex; flex-direction: column;</code>, 
+			and we style <code>#wrapper</code> with <code>flex-grow: 1</code>, leaving <code>#header</code> with it's default value
+			of <code>flex-grow: 0</code>.  That tells the header to use the minimum space needed, and the wrapper to fill all remaining space.
+			The <code>body { overflow:hidden } </code> and <code>#wrapper { overflow:hidden }</code> styles come into play to ensure that the 
+			content as a whole does not scroll, thus leading to the effect of a fixed header.
+			
+			<p>
+			If all we did was set <code>body { overflow:hidden } #wrapper { overflow:hidden }</code> then although the header would never move,
+			the content of the pages would become unviewable as the window was sized smaller (or more content was added). To achieve the
+			independent scrolling and ensure all the content and navigation can be viewed, we add the styles <code>#nav, main { overflow-y: auto }</code>.
+			
+			<p>
+			View-source on this page in your browser to see the full html and css.
+		</section>
+		<section id="references">
+			<h2>References</h2>
+			<ul>
+				<li><a href="https://www.bitovi.com/blog/use-flexbox-to-create-a-sticky-header-and-sidebar-with-flexible-content">Use Flexbox to create a sticky header and sidebar with flexible content</a></li>
+				<li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">A Complete Guide to Flexbox</a></li>
+			</ul>
+		</section>
+	</main>
+	</div>
+</body>
+</html>
